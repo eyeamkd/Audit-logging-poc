@@ -6,9 +6,9 @@ namespace AuditLoggerPoc
     {
         private readonly UserDatabaseContext _databaseContext;
 
-        public UserService() 
+        public UserService(UserDatabaseContext userDatabaseContext) 
         {
-            _databaseContext = new UserDatabaseContext();
+            _databaseContext = userDatabaseContext;
         }
 
 
@@ -19,7 +19,7 @@ namespace AuditLoggerPoc
             return user;
         }
 
-        public async Task<bool> DeleteUser(int id)
+        public async Task<bool> DeleteUser(Guid id)
         {
             User? user = await _databaseContext.Users.FindAsync(id);
 

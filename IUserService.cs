@@ -6,7 +6,7 @@
 
         Task<User> UpdateUser(User user);
 
-        Task<bool> DeleteUser(int id);
+        Task<bool> DeleteUser(Guid id);
 
         Task<IEnumerable<User>> GetUsers();
     }

@@ -1,4 +1,5 @@
 using AuditLoggerPoc;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 
@@ -18,6 +19,9 @@ try
     // Add services to the container.
 
     builder.Services.AddScoped<IUserService, UserService>();
+    builder.Services.AddScoped<IAuditLogger, LoggingService>();
+    builder.Services.AddScoped<UserDatabaseContext, UserDatabaseContext>(); 
+    builder.Services.AddSingleton<AuditTrailMediator>();
 
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

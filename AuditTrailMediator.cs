@@ -1,36 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace AuditLoggerPoc
 {
-    public class UserDatabaseContext : DbContext
+    public class AuditTrailMediator
     {
-        public DbSet<User> Users { get; set; }
+        private readonly IAuditLogger _logger;
 
-       // public DbSet<AuditTrailData> AuditTrails { get; set; }
-
-        public string DbPath { get; }
-
-        private readonly AuditTrailMediator mediator;
-
-        public UserDatabaseContext(AuditTrailMediator auditTrailMediator)
+        public AuditTrailMediator(IAuditLogger logger)
         {
-            var folder = Environment.SpecialFolder.LocalApplicationData; 
-            var path = Environment.GetFolderPath(folder);
-            DbPath = System.IO.Path.Join(path, "users.db");
-            Console.WriteLine("DB path is " + DbPath);
-            mediator = auditTrailMediator;
+            _logger = logger;
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlite($"Data Source={DbPath}");
-
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public void OnSaveChangesAsync(UserDatabaseContext context)
         {
-             
-            mediator.OnSaveChangesAsync(this);
-/*
-            var addedOrUpdatedEntities = ChangeTracker.Entries<User>()
-                .Where(x => x.State == EntityState.Added || x.State == EntityState.Modified);
+            var addedOrUpdatedEntities = context.ChangeTracker.Entries<User>()
+             .Where(x => x.State == EntityState.Added || x.State == EntityState.Modified);
 
             foreach (var entity in addedOrUpdatedEntities)
             {
@@ -70,12 +57,19 @@ namespace AuditLoggerPoc
                     }
                 }
 
-            }*/
-
-            return base.SaveChangesAsync(cancellationToken);
+            }
         }
 
+        private AuditTrailData CreateAuditTrailData(EntityEntry entityEntry)
+        {
+            // Create an audit trail log for the entity
+            var auditTrailData = new AuditTrailData
+            {
+                // Set the audit trail data properties
+            };
 
-
+            return auditTrailData;
+        }
     }
+
 }

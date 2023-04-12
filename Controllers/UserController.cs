@@ -31,7 +31,7 @@ namespace AuditLoggerPoc.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<bool> DeleteUser([FromRoute] int id)
+        public async Task<bool> DeleteUser([FromRoute] Guid id)
         {
             return await _userService.DeleteUser(id);
         }

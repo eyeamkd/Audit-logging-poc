@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Newtonsoft.Json;
 
 namespace AuditLoggerPoc
@@ -26,7 +25,7 @@ namespace AuditLoggerPoc
 
                     if (entity.State == EntityState.Added)
                     {
-                        AuditTrailData auditTrailData = new AuditTrailData
+                        AuditTrail auditTrailData = new AuditTrail
                         {
                             TrailId = Guid.NewGuid(),
                             Timestamp = DateTime.UtcNow,
@@ -42,14 +41,18 @@ namespace AuditLoggerPoc
                     }
                     else if (entity.State == EntityState.Modified)
                     {
-                        AuditTrailData auditTrailData = new AuditTrailData
+                        var modifiedProperties = entity.Properties
+                                                   .Where(p => p.IsModified)
+                                                   .Select(p => p.Metadata.Name)
+                                                   .ToList();
+                        AuditTrail auditTrailData = new AuditTrail
                         {
                             TrailId = Guid.NewGuid(),
                             Timestamp = DateTime.UtcNow,
                             UserId = entity.Property(x => x.Id).CurrentValue,
-                            oldValues = (string)entity.OriginalValues.ToObject(),
-                            newValues = (string)entity.CurrentValues.ToObject(),
-                            affectedColumns = "NA",
+                            oldValues = JsonConvert.SerializeObject(entity.OriginalValues.ToObject()),
+                            newValues = JsonConvert.SerializeObject(entity.CurrentValues.ToObject()),
+                            affectedColumns = JsonConvert.SerializeObject(modifiedProperties),
                             primaryKey = Guid.NewGuid().ToString(),
                             type = "UPDATE"
                         };
@@ -60,10 +63,10 @@ namespace AuditLoggerPoc
             }
         }
 
-        private AuditTrailData CreateAuditTrailData(EntityEntry entityEntry)
+        private AuditTrail CreateAuditTrailData(EntityEntry entityEntry)
         {
             // Create an audit trail log for the entity
-            var auditTrailData = new AuditTrailData
+            var auditTrailData = new AuditTrail
             {
                 // Set the audit trail data properties
             };

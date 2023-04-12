@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AuditLoggerPoc
 {
-    public class AuditTrailData
+    [Table("AuditTrails")]
+    public class AuditTrail
     {
         [Key]
         public Guid TrailId { get; set; }

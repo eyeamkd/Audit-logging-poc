@@ -4,20 +4,19 @@ namespace AuditLoggerPoc
 {
     public class AuditTrailDbContext : DbContext
     {
-        public DbSet<AuditTrailData> AuditTrailData { get; set; }
+        public DbSet<AuditTrail> AuditTrailData { get; set; }
+        public string DbPath { get; }
 
-        public AuditTrailDbContext(DbContextOptions<AuditTrailDbContext> options)
-            : base(options)
+
+        public AuditTrailDbContext()
         {
+            var folder = Environment.SpecialFolder.LocalApplicationData;
+            var path = Environment.GetFolderPath(folder);
+            DbPath = System.IO.Path.Join(path, "users.db");
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            // Configure the AuditTrailData entity
-            modelBuilder.Entity<AuditTrailData>()
-                .ToTable("AuditTrail.AuditTrailData")
-                .HasKey(a => a.TrailId);
-        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlite($"Data Source={DbPath}");
+
     }
 
 }

@@ -7,6 +7,6 @@
     public interface IAuditLogger
     {
 
-        void Log(AuditTrailData auditTrailData);
+        void Log(AuditTrail auditTrailData);
     }
 }

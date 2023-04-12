@@ -8,9 +8,10 @@
             _auditTrailDbContext = auditTrailDbContext;
         }
 
-        public void Log(AuditTrailData auditTrailData)
+        public void Log(AuditTrail auditTrailData)
         {
             _auditTrailDbContext.AuditTrailData.Add(auditTrailData);
+            _auditTrailDbContext.SaveChanges();
 
         }
     }

@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace AuditLoggerPoc.Migrations
+namespace AuditLoggerPoc.Migrations.PrimaryDB
 {
-    [DbContext(typeof(UserDatabaseContext))]
-    [Migration("20230412100119_New-Modifications-Audit-Trail")]
-    partial class NewModificationsAuditTrail
+    [DbContext(typeof(PrimaryDBContext))]
+    [Migration("20230413092048_Added-Company")]
+    partial class AddedCompany
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,7 +20,7 @@ namespace AuditLoggerPoc.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.4");
 
-            modelBuilder.Entity("AuditLoggerPoc.AuditTrailData", b =>
+            modelBuilder.Entity("AuditLoggerPoc.Models.DataModels.AuditTrail", b =>
                 {
                     b.Property<Guid>("TrailId")
                         .ValueGeneratedOnAdd()
@@ -57,7 +57,56 @@ namespace AuditLoggerPoc.Migrations
                     b.ToTable("AuditTrails");
                 });
 
-            modelBuilder.Entity("AuditLoggerPoc.User", b =>
+            modelBuilder.Entity("AuditLoggerPoc.Models.DataModels.Company", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LineOfBusiness")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Strength")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Companies");
+                });
+
+            modelBuilder.Entity("AuditLoggerPoc.Models.DataModels.Property", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Properties");
+                });
+
+            modelBuilder.Entity("AuditLoggerPoc.Models.DataModels.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

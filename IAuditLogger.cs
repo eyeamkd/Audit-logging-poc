@@ -1,4 +1,6 @@
-﻿namespace AuditLoggerPoc
+﻿using AuditLoggerPoc.Models.DataModels;
+
+namespace AuditLoggerPoc
 {
     public enum ActivityType
     {
@@ -8,5 +10,7 @@
     {
 
         void Log(AuditTrail auditTrailData);
+
+        void SaveLog();
     }
 }

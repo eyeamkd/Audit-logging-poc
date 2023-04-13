@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AuditLoggerPoc.Models.DataModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AuditLoggerPoc.Controllers
 {

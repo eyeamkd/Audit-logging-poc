@@ -1,4 +1,6 @@
-﻿namespace AuditLoggerPoc
+﻿using AuditLoggerPoc.Models.DataModels;
+
+namespace AuditLoggerPoc
 {
     public interface IUserService
     {

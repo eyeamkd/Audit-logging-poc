@@ -1,4 +1,5 @@
 using AuditLoggerPoc;
+using AuditLoggerPoc.DBContexts;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -21,6 +22,7 @@ try
     builder.Services.AddSingleton<IAuditLogger, LoggingService>();
     builder.Services.AddSingleton<AuditTrailMediator>();
     builder.Services.AddScoped<UserDatabaseContext, UserDatabaseContext>();
+    builder.Services.AddScoped<PrimaryDBContext, PrimaryDBContext>();
     builder.Services.AddScoped<IUserService, UserService>();
 
  

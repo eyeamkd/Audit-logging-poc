@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AuditLoggerPoc.DBContexts;
+using AuditLoggerPoc.Models.DataModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuditLoggerPoc
 {

@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AuditLoggerPoc.DBContexts;
+using AuditLoggerPoc.Models.DataModels;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Newtonsoft.Json;
 
@@ -72,6 +74,11 @@ namespace AuditLoggerPoc
             };
 
             return auditTrailData;
+        }
+
+        public void SaveLogChanges()
+        {
+            _logger.SaveLog();
         }
     }
 
